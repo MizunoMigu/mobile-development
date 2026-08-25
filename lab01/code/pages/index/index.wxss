@@ -1,0 +1,13 @@
+/**index.wxss**/
+page {
+  text-align: center;
+}
+
+.title{
+  color: red;
+  margin-top: 200rpx;
+}
+
+.txt{
+  color: blue;
+}

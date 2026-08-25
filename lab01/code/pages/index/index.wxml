@@ -1,0 +1,4 @@
+<view class="title">Hello {{wordings[index]}}</view>
+<text class="txt">Mini Program</text>
+<image mode="heightFix" src="../../img/bird.jpeg"></image>
+<button bindtap="onClick">Click</button>
