@@ -83,15 +83,15 @@ Page({
 
 > 运行编译，默认index为0，显示文本`World!`。
 >
-> ![运行效果图](https://img2.tofaka.com/autoupload/f/9vwlj/20260824/jSPd/1875X1499/run01.png/webp)
+> ![运行效果图](./assets/run01.png)
 >
 > 点击`Click`按钮，index变更为1，文本内容改为`WWWWorld!`。
 >
-> ![运行效果图](https://img2.tofaka.com/autoupload/f/9vwlj/20260824/ckWz/1875X1499/run02.png/webp)
+> ![运行效果图](./assets/run02.png)
 >
 > 再次点击`Click`按钮，index变更为0，文本又切换回`World`。
 >
-> ![运行效果图](https://img2.tofaka.com/autoupload/f/9vwlj/20260824/7upz/1875X1499/run03.png/webp)
+> ![运行效果图](./assets/run03.png)
 
 
 
