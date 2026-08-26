@@ -1,0 +1,17 @@
+<image mode="heightFix" src="https://img2.tofaka.com/autoupload/f/9vwlj/20260825/td0I/2848X1600/%E5%90%8D%E7%89%87%E5%A4%B4%E5%9B%BE%E4%BB%8B%E7%BB%8D%E7%94%9F%E6%88%90.png/webp"></image>
+<view class="intro">戚晓旭|OUC</view>
+<view class="body">
+  <view class="title">智能科学与技术|AI技术爱好者</view>
+  <view class="text">深耕AI、算法与计算机技术，熟悉Python、C/C++开发，具备实验调试、系统优化、多媒体内容制作经验。</view>
+  <view class="text">平时没事就爱捣鼓各种数码设备，看见新奇的硬件、软件就忍不住上手体验。有空会写写代码调调实验，也会琢磨做点有意思的图文内容。</view>
+  <view class="text">慢热偏内向，不太擅长热闹社交，但遇到同好很愿意唠两句。生活一半交给学习技术，一半留给自己的小爱好，平平淡淡慢慢积累，一边踩坑一边慢慢成长。</view>
+</view>
+<view class="img-wrap">
+  <image class="card" mode="widthFix" src="../../img/background.jpg"></image>
+</view>
+<image class="logo" src="../../img/logo.png"></image>
+<view class="info">
+  <view>姓名：戚晓旭</view>
+  <view>电话：151-0099-3991</view>
+  <view>邮箱：nulaxk@163.com</view>
+</view>
