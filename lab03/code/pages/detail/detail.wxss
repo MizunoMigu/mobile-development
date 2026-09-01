@@ -1,0 +1,34 @@
+/*整体容器*/
+.container{
+  padding: 15rpx;
+  text-align: center;
+}
+/*新闻标题*/
+.title{
+  font-size: 14pt;
+  line-height: 60rpx;
+}
+/*新闻图片*/
+.poster image{
+  width: 700rpx;
+}
+/*新闻正文*/
+.content{
+  text-align: left;
+  font-size: 12pt;
+  line-height: 60rpx;
+}
+/*新闻日期*/
+.add_date{
+  width: 100%;
+  font-size: 12pt;
+  text-align: right;
+  line-height: 30rpx;
+  margin-top: 20rpx;
+}
+/*点击收藏按钮*/
+button{
+  width: 250rpx;
+  height: 80rpx;
+  margin-top: 20rpx;
+}

@@ -1,0 +1,31 @@
+<!--登录面板-->
+<view id="myLogin">
+  <block wx:if="{{isLogin}}">
+    <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image id="myIcon" src="{{src}}"></image>
+    </button>
+
+    <block wx:if="{{!editNick}}">
+      <text id="nickName" bindtap="startEditNick">{{nickName}}</text>
+    </block>
+    <block wx:else>
+      <input type="nickname" bindblur="saveNickName" value="{{nickname}}" auto-focus placeholder="修改昵称"></input>
+    </block>
+    <!-- <image id="myIcon" src="{{src}}"></image>
+    <text id="nickName">{{nickName}}</text> -->
+
+    <button bindtap="logout" class="logout-btn">退出登录</button>
+  </block>
+  <button wx:else open-type="getUserInfo" bindgetuserinfo="quickLogin">未登录，点此登录</button>
+</view>
+<!--我的收藏-->
+<view id = "myFavorites">
+  <text>我的收藏({{newsList.length}})</text>
+  <!--收藏的新闻列表-->
+  <view id="new-list">
+    <view class="list-item" wx:for="{{newsList}}" wx:for-item="news" wx:key="{{news.id}}"  bindtap="goToDetail" data-id="{{news.id}}">
+      <image src="{{news.poster}}"></image>
+      <text>◇{{news.title}} -- {{news.add_date}}</text>
+    </view>
+  </view>
+</view>

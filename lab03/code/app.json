@@ -1,0 +1,31 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/my/my",
+    "pages/detail/detail"
+  ],
+  "window": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "高校新闻网",
+    "navigationBarBackgroundColor": "#2979E2"
+  },
+  "tabBar": {
+    "list": [{
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "images/index.png",
+      "selectedIconPath": "images/index_blue.png"
+    }, 
+    {
+      "pagePath": "pages/my/my",
+      "text": "我的",
+      "iconPath": "images/my.png",
+      "selectedIconPath": "images/my_blue.png"
+    }  
+  ]
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}
