@@ -34,7 +34,7 @@
 
 1. **创建工程并配置应用入口。**使用DevEco Studio新建HarmonyOS工程（phone设备类型，空Ability模板），生成`entry`模块。工程核心目录结构如下：
 
-   ![工程目录结构](https://img.remit.ee/i/cQF7rkzkkADr)
+   ![工程目录结构](assets/files_05.png)
    
 2. **配置UIAbility生命周期与窗口。**在`EntryAbility.ets`中重写`onCreate / onWindowStageCreate / onForeground / onBackground / onDestroy`等生命周期方法，通过 `windowStage.loadContent('pages/HomePage')`加载主页面；在`onWindowStageCreate`中设置窗口全屏，并注册`avoidAreaChange`监听动态获取状态栏与导航条避让区高度存入`AppStorage`，供页面做安全区适配，保证键盘不被系统导航条遮挡。
 
@@ -59,13 +59,13 @@
    private expressions: Array<string> = [];  // 表达式token数组
    ```
 
-   ![普通模式主界面](https://img.remit.ee/i/SqYKF9xexu0J)
+   ![普通模式主界面](assets/calculator_commom.png)
 
 4. **构建键盘数据源。**新建`PressKeysViewModel`类提供普通模式与科学模式两套按键数据（`PressKeyItem`封装按键文案、行列占比flag、宽高尺寸等）。普通模式为5列布局，科学模式为5列 × 7行布局，其中`=`、`AC`、`⌫`等键通过flag控制跨行/跨列显示；`deg/rad`键复用科学模式第5列空白槽位，显示当前角度模式。页面按当前模式从ViewModel获取对应按键数组渲染。
 
 5. **实现按键分发与输入逻辑。**在`HomePage`中实现`sciencePress`统一按键入口，将按键分发给数字输入、运算符输入、括号输入、常量输入、删除、等号、函数运算等处理方法；输入过程以`expressions`token数组为权威状态（数字、运算符、函数token各自成元素），配合`formatInputValue`实时刷新输入栏与结果预览。对`00`键单独处理：空函数括号内、函数参数内、普通数字后、等号后等不同上下文分别追加`00`到正确位置。
 
-   ![表达式输入与结果预览](https://img.remit.ee/i/aot1JQ3zLQJz)
+   ![表达式输入与结果预览](assets/equation_05.png)
 
 6. **实现计算引擎。**在`CalculateUtil.ets`中实现完整的表达式解析与求值：先将表达式token化（数字、函数调用整体、运算符、括号、`π`/`e`），再通过**调度场算法（Shunting-yard）**将中缀表达式转为后缀表达式，最后用栈完成后缀求值。关键设计点包括：
 
@@ -79,15 +79,15 @@
 
 7. **实现等号、结果展示与连续运算。**`equPress`在按下等号时将当前表达式求值，结果写入历史记录（最多保留50条），并通过状态切换实现"输入过程小号结果预览、等号后结果放大覆盖计算式"的交互；`lastBtnIsEqu`标记等号状态，之后直接输入数字会开启新一轮计算。
 
-   ![等号后结果放大](https://img.remit.ee/i/jS4V50tQ059Y)
+   ![等号后结果放大](assets/result_05.png)
 
 8. **实现历史记录入口。**标题栏历史按钮切换`showHistoryPage`，为`true`时隐藏计算器界面、展示历史列表；点击某条记录调用`useHistory`将其表达式回填输入栏并重新计算，便于继续编辑。
 
-   ![历史记录页面](https://img.remit.ee/i/VVxuUmpKqS6R)
+   ![历史记录页面](assets/history_05.png)
 
 9. **实现科学/普通模式切换与状态重置。**右上角按钮切换`isScienceMode`，切换时同步更换键盘数据源，并清空残留的输入状态（函数参数标记、光标残留等），避免出现"切回科学模式后sin失灵、log与sin嵌套"等脏状态问题。
 
-   ![科学模式界面](https://img.remit.ee/i/ulk0LO4FnjIs)
+   ![科学模式界面](assets/calculator_scinece.png)
 
 10. **进行逻辑样例测试与模拟器调试。**由于计算逻辑复杂、边界场景多，编写了基于Node.js的样例测试脚本：将真实`.ets`纯逻辑文件转译为可执行JS用模拟`HomePage`状态机的`MiniCalc`类逐字复刻页面输入逻辑，通过按键序列驱动断言输入栏与结果值。测试覆盖嵌套计算、来回乘除、多项式、隐式乘法、弧度语义、多小数点、`00`键、倒数参数内输入等场景，共**214个样例全部通过**，作为功能正确性的回归保障；随后在DevEco Studio中编译运行，在模拟器上验证界面布局与交互。
 
@@ -190,11 +190,11 @@ if (last !== '' && CalculateUtil.isFunctionToken(last)) {
 - 输入框光标可自由移动，删除键删除光标左侧元素，删除后光标不再跳回末尾；
 - 214条逻辑样例测试全部通过，计算正确性得到回归保障。
 
-![普通模式运行效果](https://img.remit.ee/i/zeN8dG79xtiR)
+![普通模式运行效果](assets/result_commom.png)
 
-![科学模式运行效果](https://img.remit.ee/i/PgWsWLScZWg4)
+![科学模式运行效果](assets/result_science.png)
 
-![历史记录效果](https://img.remit.ee/i/A6bRSkgTh3f7)
+![历史记录效果](assets/history.png)
 
 ## 二、问题总结与体会
 
