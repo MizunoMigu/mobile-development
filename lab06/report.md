@@ -42,11 +42,11 @@
 
 ### （三）实验步骤
 
-1. **创建云开发项目并部署云数据库。**我使用微信开发者工具新建项目，选择"小程序·云开发"模板（后端服务勾选"小程序·云开发"），项目命名为`cloudPhoto`并填入测试AppID。随后清理多余模板代码。接着在云开发控制台创建了数据集`photos`，将权限设置为"**所有用户可读，仅创建者及管理员可写**"，保证任何用户都能浏览图片、只有上传者本人能修改自己的记录；同时我为`photos`创建了`tag`升序+`createdAt`降序与`_openid`升序+`createdAt`降序两组联合索引，满足标签筛选和个人作品列表的排序查询需求。
+1. **创建云开发项目并部署云数据库**。我使用微信开发者工具新建项目，选择"小程序·云开发"模板（后端服务勾选"小程序·云开发"），项目命名为`cloudPhoto`并填入测试AppID。随后清理多余模板代码。接着在云开发控制台创建了数据集`photos`，将权限设置为"**所有用户可读，仅创建者及管理员可写**"，保证任何用户都能浏览图片、只有上传者本人能修改自己的记录；同时我为`photos`创建了`tag`升序+`createdAt`降序与`_openid`升序+`createdAt`降序两组联合索引，满足标签筛选和个人作品列表的排序查询需求。
 
    ![云数据库photos集合权限设置](assets/database_settings.png)
 
-2. **注册页面文件并完成全局配置。**本项目共有4个页面：`index`（首页）、`homepage`（个人主页）、`detail`（图片展示页）、`add`（上传图片页），我在`app.json`的`pages`属性中依次注册，保存后自动生成各页面的js/json/wxml/wxss文件。同时我配置了`window`导航栏（标题"图片分享社区"、浅紫色背景、黑色文字）与底部`tabBar`（首页、上传图片、个人主页三栏），使三个主页面可以一键切换；`app.js`中我通过`wx.cloud.init({ traceUser: true })`完成云能力初始化，并在`globalData`中维护`userInfo`、`openid`等全局状态，封装了`getOpenId`（调用云函数获取openid）、`login`（登录并加载用户资料）、`logout`等全局方法供各页面复用。
+2. **注册页面文件并完成全局配置**。本项目共有4个页面：`index`（首页）、`homepage`（个人主页）、`detail`（图片展示页）、`add`（上传图片页），我在`app.json`的`pages`属性中依次注册，保存后自动生成各页面的js/json/wxml/wxss文件。同时我配置了`window`导航栏（标题"图片分享社区"、浅紫色背景、黑色文字）与底部`tabBar`（首页、上传图片、个人主页三栏），使三个主页面可以一键切换；`app.js`中我通过`wx.cloud.init({ traceUser: true })`完成云能力初始化，并在`globalData`中维护`userInfo`、`openid`等全局状态，封装了`getOpenId`（调用云函数获取openid）、`login`（登录并加载用户资料）、`logout`等全局方法供各页面复用。
 
    ```json
    // app.json 关键配置
@@ -74,9 +74,9 @@
 
    ![页面文件创建完成](assets/files_06.png)
 
-3. **编写公共样式表。**整体容器、卡片等样式在多个页面复用，因此我将它们写入公共样式表`app.wxss`：`.container`采用flex纵向布局并水平居中；`.card`定义卡片（宽度710rpx、圆角、半透明白底、柔和阴影）；`.card-head`为头像与昵称横排布局，`.avatar`圆形头像；`.card-body`与内部图片宽度100%；`.card-foot`横排展示标签与上传日期。各页面独有的样式我再写到对应页面的wxss文件中，无须重复声明。
+3. **编写公共样式表**。整体容器、卡片等样式在多个页面复用，因此我将它们写入公共样式表`app.wxss`：`.container`采用flex纵向布局并水平居中；`.card`定义卡片（宽度710rpx、圆角、半透明白底、柔和阴影）；`.card-head`为头像与昵称横排布局，`.avatar`圆形头像；`.card-body`与内部图片宽度100%；`.card-foot`横排展示标签与上传日期。各页面独有的样式我再写到对应页面的wxss文件中，无须重复声明。
 
-4. **设计首页视图。**我设计了首页作为图片展示的核心区域，页面从上到下依次为：hero横幅（"发现生活里的光"标语）、标签筛选条（`scroll-view`横向滚动，"全部"+八种图片标签）、图片卡片列表与右上角浮动"分享"按钮。每张卡片由页眉（作者头像、昵称）、主体（图片）、页脚（标签、上传日期）三部分构成，用`wx:for`循环渲染。我计划使用的组件：容器组件`<view>`、图片组件`<image>`、文本组件`<text>`、按钮组件`<button>`、滚动组件`<scroll-view>`、跳转组件`<navigator>`。
+4. **设计首页视图**。我设计了首页作为图片展示的核心区域，页面从上到下依次为：hero横幅（"发现生活里的光"标语）、标签筛选条（`scroll-view`横向滚动，"全部"+八种图片标签）、图片卡片列表与右上角浮动"分享"按钮。每张卡片由页眉（作者头像、昵称）、主体（图片）、页脚（标签、上传日期）三部分构成，用`wx:for`循环渲染。我计划使用的组件：容器组件`<view>`、图片组件`<image>`、文本组件`<text>`、按钮组件`<button>`、滚动组件`<scroll-view>`、跳转组件`<navigator>`。
 
    ```xml
    <!-- 卡片主体：点击图片跳转详情页 -->
@@ -87,13 +87,13 @@
 
    <img src="assets/index_06.png" alt="首页设计效果" style="zoom:33%;" />
 
-5. **设计个人主页、图片展示页与上传图片页视图。**我设计了三个页面的视图：个人主页顶部为头像昵称区域（`avatarBox`，头像圆形居中、昵称位于头像下方），下方复用与首页一致的卡片列表展示当前作者的作品，并提供"登录""修改头像和昵称""退出登录"入口；图片展示页顶部展示完整图片，下方为"下载到本地""分享图片""全屏预览"三个按钮（作者本人额外显示"删除图片"按钮）；上传图片页包含"上传图片"按钮、标签选择区与"已上传图片历史记录"九宫格区域，九宫格用`float: left`排列多张图片。
+5. **设计个人主页、图片展示页与上传图片页视图**。我设计了三个页面的视图：个人主页顶部为头像昵称区域（`avatarBox`，头像圆形居中、昵称位于头像下方），下方复用与首页一致的卡片列表展示当前作者的作品，并提供"登录""修改头像和昵称""退出登录"入口；图片展示页顶部展示完整图片，下方为"下载到本地""分享图片""全屏预览"三个按钮（作者本人额外显示"删除图片"按钮）；上传图片页包含"上传图片"按钮、标签选择区与"已上传图片历史记录"九宫格区域，九宫格用`float: left`排列多张图片。
 
    <img src="assets/homepage_settings.png" alt="个人主页设计效果" style="zoom:33%;" />
 
    <img src="assets/add_06.png" alt="上传图片页设计效果" style="zoom:33%;" />
 
-6. **实现用户个人信息获取逻辑。**上传图片与展示个人主页都需要当前用户的基础信息和`openid`。我将登录入口放在个人主页：点击"进入个人主页"按钮调用`app.login()`，其中`getOpenId()`通过云函数获取用户openid，`loadUserProfile()`优先读取本地缓存（`wx.getStorageSync('cloudPhotoProfile:openid')`），缓存为空时回源云数据库查询该用户最近一次作品的头像昵称，实现资料的持久化；头像昵称的修改我使用`<button open-type='chooseAvatar'>`与`<input type='nickname'>`组件收集新资料，保存后按openid写入缓存并同步更新云端作品信息。openid的获取依赖云函数：我在`cloudfunctions`下新建了Node.js云函数`getOpenid`，通过`cloud.getWXContext().OPENID`取得当前用户专属编号，右击"上传并部署：云端安装依赖"发布到云开发控制台后，在小程序端用`wx.cloud.callFunction`调用，首次获取后存入`app.globalData.openid`，后续直接复用避免重复请求。
+6. **实现用户个人信息获取逻辑**。上传图片与展示个人主页都需要当前用户的基础信息和`openid`。我将登录入口放在个人主页：点击"进入个人主页"按钮调用`app.login()`，其中`getOpenId()`通过云函数获取用户openid，`loadUserProfile()`优先读取本地缓存（`wx.getStorageSync('cloudPhotoProfile:openid')`），缓存为空时回源云数据库查询该用户最近一次作品的头像昵称，实现资料的持久化；头像昵称的修改我使用`<button open-type='chooseAvatar'>`与`<input type='nickname'>`组件收集新资料，保存后按openid写入缓存并同步更新云端作品信息。openid的获取依赖云函数：我在`cloudfunctions`下新建了Node.js云函数`getOpenid`，通过`cloud.getWXContext().OPENID`取得当前用户专属编号，右击"上传并部署：云端安装依赖"发布到云开发控制台后，在小程序端用`wx.cloud.callFunction`调用，首次获取后存入`app.globalData.openid`，后续直接复用避免重复请求。
 
    ```javascript
    // 云函数 getOpenid/index.js
@@ -109,7 +109,7 @@
 
    ![控制台显示用户openid](assets/openid_06.png)
 
-7. **实现图片上传逻辑。**上传图片页点击"上传图片"按钮后：先校验登录状态，未登录时弹出提示并引导跳转个人主页登录；已登录则用`wx.chooseImage`从相册/相机选择一张压缩图片，得到临时路径后调用`wx.cloud.uploadFile`上传到云存储，云端路径命名为`photos/时间戳-随机数.扩展名`（如`photos/1700000000000-123456.jpg`）；上传成功后调用`photos.add`将记录写入云数据库，字段包括`photoUrl`（云文件ID）、`avatarUrl`、`nickName`（取自全局用户信息）、`tag`（用户选择的标签）、`addDate`（`formatDate`格式化的当天日期`YYYY-MM-DD`）、`createdAt`（`db.serverDate()`云端时间）。上传过程我用`wx.showLoading`提示、完成后`wx.hideLoading`并刷新历史记录。
+7. **实现图片上传逻辑**。上传图片页点击"上传图片"按钮后：先校验登录状态，未登录时弹出提示并引导跳转个人主页登录；已登录则用`wx.chooseImage`从相册/相机选择一张压缩图片，得到临时路径后调用`wx.cloud.uploadFile`上传到云存储，云端路径命名为`photos/时间戳-随机数.扩展名`（如`photos/1700000000000-123456.jpg`）；上传成功后调用`photos.add`将记录写入云数据库，字段包括`photoUrl`（云文件ID）、`avatarUrl`、`nickName`（取自全局用户信息）、`tag`（用户选择的标签）、`addDate`（`formatDate`格式化的当天日期`YYYY-MM-DD`）、`createdAt`（`db.serverDate()`云端时间）。上传过程我用`wx.showLoading`提示、完成后`wx.hideLoading`并刷新历史记录。
 
    ```javascript
    // add.js 图片上传核心逻辑
@@ -135,7 +135,7 @@
 
    ![云开发控制台显示上传记录](assets/database_add.png)
 
-8. **实现图片历史记录展示。**云数据库在添加记录时会自动登记当前用户的`_openid`字段，因此只需筛选出`_openid`与当前用户匹配的数据即可获取本人的上传记录。我在`add.js`中实现了`getHistoryPhotos`：`photos.orderBy('createdAt','desc').where({ _openid: userId }).skip(offset).limit(30).get()`分页查询，结果存入`historyPhotos`；`add.wxml`用`wx:for`循环渲染九宫格，点击任意图片调用`wx.previewImage`全屏预览；在`onShow`（页面打开）与`upload`（上传成功后）中分别调用该方法，保证历史记录始终最新。
+8. **实现图片历史记录展示**。云数据库在添加记录时会自动登记当前用户的`_openid`字段，因此只需筛选出`_openid`与当前用户匹配的数据即可获取本人的上传记录。我在`add.js`中实现了`getHistoryPhotos`：`photos.orderBy('createdAt','desc').where({ _openid: userId }).skip(offset).limit(30).get()`分页查询，结果存入`historyPhotos`；`add.wxml`用`wx:for`循环渲染九宫格，点击任意图片调用`wx.previewImage`全屏预览；在`onShow`（页面打开）与`upload`（上传成功后）中分别调用该方法，保证历史记录始终最新。
 
    ```javascript
    // add.js 获取当前用户历史记录
@@ -153,7 +153,7 @@
 
    <img src="assets/add_history.png" alt="上传图片页历史记录效果" style="zoom:33%;" />
 
-9. **实现首页图片列表展示与页面跳转。**我在`index.js`中实现了`loadPhotos`分页查询：按当前选中的标签（"全部"则不附加条件，否则`where({ tag })`）、`orderBy('createdAt','desc')`、`skip(offset).limit(10)`从云数据库读取图片列表并渲染卡片；在`onShow`中刷新列表，保证从其他页面返回首页时图片保持最新，并支持下拉刷新（`onPullDownRefresh`）与触底加载更多（`onReachBottom`）。点击卡片头像我通过`openAuthor`将作者`openid`存入`app.globalData.profileOpenid`并`wx.switchTab`跳转个人主页，点击卡片图片通过`<navigator url='../detail/detail?id={{item._id}}'>`跳转图片展示页并携带图片id。
+9. **实现首页图片列表展示与页面跳转**。我在`index.js`中实现了`loadPhotos`分页查询：按当前选中的标签（"全部"则不附加条件，否则`where({ tag })`）、`orderBy('createdAt','desc')`、`skip(offset).limit(10)`从云数据库读取图片列表并渲染卡片；在`onShow`中刷新列表，保证从其他页面返回首页时图片保持最新，并支持下拉刷新（`onPullDownRefresh`）与触底加载更多（`onReachBottom`）。点击卡片头像我通过`openAuthor`将作者`openid`存入`app.globalData.profileOpenid`并`wx.switchTab`跳转个人主页，点击卡片图片通过`<navigator url='../detail/detail?id={{item._id}}'>`跳转图片展示页并携带图片id。
 
    ```javascript
    // index.js 首页图片列表查询（标签筛选 + 分页）
@@ -164,11 +164,11 @@
 
    <img src="assets/index_tag.png" alt="首页图片列表展示" style="zoom:33%;" />
 
-10. **实现个人主页逻辑。**`homepage`页面`onLoad`读取跳转参数`id`（被查看作者的openid），`onShow`中判断当前查看的是本人还是其他作者：查看本人时我通过`app.login()`完成登录（云函数取openid+从缓存或云端加载头像昵称）；"修改头像和昵称"入口打开资料编辑表单，临时头像先上传至`avatars/`路径，再连同昵称一起通过`app.saveUserProfile`写入缓存，并`photos.where({ _openid }).update`同步更新该用户所有作品的`avatarUrl`与`nickName`；作品列表按openid查询（`orderBy('createdAt','desc')`、分页加载），顶端头像昵称取`photoList`中的作者信息展示，并统计"共分享N张图片"。
+10. **实现个人主页逻辑**。`homepage`页面`onLoad`读取跳转参数`id`（被查看作者的openid），`onShow`中判断当前查看的是本人还是其他作者：查看本人时我通过`app.login()`完成登录（云函数取openid+从缓存或云端加载头像昵称）；"修改头像和昵称"入口打开资料编辑表单，临时头像先上传至`avatars/`路径，再连同昵称一起通过`app.saveUserProfile`写入缓存，并`photos.where({ _openid }).update`同步更新该用户所有作品的`avatarUrl`与`nickName`；作品列表按openid查询（`orderBy('createdAt','desc')`、分页加载），顶端头像昵称取`photoList`中的作者信息展示，并统计"共分享N张图片"。
 
     <img src="assets/homepage_06.png" alt="个人主页效果" style="zoom:33%;" />
 
-11. **实现图片展示页逻辑。**`detail`页面`onLoad`中我通过`photos.doc(options.id).get()`根据图片id查询记录并展示完整图片与作者、标签、日期信息；"下载到本地"我先`wx.cloud.downloadFile`从云存储下载图片到临时路径，再`wx.saveImageToPhotosAlbum`保存到本地相册（模拟器会弹出授权弹窗，真机直接保存）；"分享图片"下载后调用`wx.showShareImageMenu`呼出系统图片分享菜单；"全屏预览"使用`wx.previewImage`；"删除图片"仅作者本人可见，我依次调用`photos.doc(id).remove`删除数据库记录、`wx.cloud.deleteFile`删除云存储文件，成功后返回上一页。
+11. **实现图片展示页逻辑**。`detail`页面`onLoad`中我通过`photos.doc(options.id).get()`根据图片id查询记录并展示完整图片与作者、标签、日期信息；"下载到本地"我先`wx.cloud.downloadFile`从云存储下载图片到临时路径，再`wx.saveImageToPhotosAlbum`保存到本地相册（模拟器会弹出授权弹窗，真机直接保存）；"分享图片"下载后调用`wx.showShareImageMenu`呼出系统图片分享菜单；"全屏预览"使用`wx.previewImage`；"删除图片"仅作者本人可见，我依次调用`photos.doc(id).remove`删除数据库记录、`wx.cloud.deleteFile`删除云存储文件，成功后返回上一页。
 
     ```javascript
     // detail.js 下载图片到本地
@@ -186,7 +186,7 @@
 
     <img src="assets/detail_06.png" alt="图片展示页效果" style="zoom:33%;" />
 
-12. **运行调试与验证。**我在微信开发者工具模拟器与真机预览中运行项目：从首页点击浮动按钮跳转上传图片页，选择并上传多张带不同标签的测试图片；返回首页验证卡片列表按上传时间倒序展示、标签筛选、下拉刷新与触底分页；进入个人主页验证登录、资料修改与作品列表；进入详情页验证下载、分享、全屏预览与作者删除；同时打开云开发控制台核对`photos`集合记录与云存储中的图片文件。
+12. **运行调试与验证**。我在微信开发者工具模拟器与真机预览中运行项目：从首页点击浮动按钮跳转上传图片页，选择并上传多张带不同标签的测试图片；返回首页验证卡片列表按上传时间倒序展示、标签筛选、下拉刷新与触底分页；进入个人主页验证登录、资料修改与作品列表；进入详情页验证下载、分享、全屏预览与作者删除；同时打开云开发控制台核对`photos`集合记录与云存储中的图片文件。
 
 ### （四）核心代码片段
 
