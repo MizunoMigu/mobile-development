@@ -1,0 +1,43 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/homepage/homepage",
+    "pages/detail/detail",
+    "pages/add/add"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#d9c9ee",
+    "navigationBarTitleText": "图片分享社区",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f2ecf9",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#817b91",
+    "selectedColor": "#7456d9",
+    "backgroundColor": "#efe7f8",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab-home.png",
+        "selectedIconPath": "images/tab-home-active.png"
+      },
+      {
+        "pagePath": "pages/add/add",
+        "text": "上传图片",
+        "iconPath": "images/tab-upload.png",
+        "selectedIconPath": "images/tab-upload-active.png"
+      },
+      {
+        "pagePath": "pages/homepage/homepage",
+        "text": "个人主页",
+        "iconPath": "images/tab-profile.png",
+        "selectedIconPath": "images/tab-profile-active.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

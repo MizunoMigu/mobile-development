@@ -1,0 +1,27 @@
+<image class="page-background" src="/images/app-background.jpg" mode="aspectFill"></image>
+<view class="detail-page">
+  <view wx:if="{{photo}}" class="photo-panel">
+    <image class="photo" src="{{photo.photoUrl}}" mode="widthFix" bindtap="previewPhoto"></image>
+    <view class="meta">
+      <view class="meta-author">
+        <text class="meta-name">{{photo.nickName || '微信用户'}}</text>
+        <text class="meta-tag">{{photo.tag || '未分类'}}</text>
+      </view>
+      <text class="meta-date">{{photo.addDate}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{photo}}" class="actions {{canDelete ? 'owner-actions' : ''}}">
+    <button class="action-button download-button" bindtap="downloadPhoto" loading="{{downloading}}" disabled="{{downloading}}"><text class="action-icon">↓</text>下载到本地</button>
+    <button class="action-button share-button" bindtap="sharePhoto" loading="{{sharing}}" disabled="{{sharing}}"><text class="action-icon">↗</text>分享图片</button>
+    <button class="action-button preview-button" bindtap="previewPhoto"><text class="action-icon">⌕</text>全屏预览</button>
+    <button wx:if="{{canDelete}}" class="action-button delete-button" bindtap="deletePhoto" loading="{{deleting}}" disabled="{{deleting}}"><text class="action-icon">×</text>删除图片</button>
+  </view>
+
+  <block wx:if="{{!loading}}">
+    <view wx:if="{{!photo}}" class="empty">
+      <text class="empty-icon">▧</text>
+      <text>{{errorText || '图片不存在'}}</text>
+    </view>
+  </block>
+</view>

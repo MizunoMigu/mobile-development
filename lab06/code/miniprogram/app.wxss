@@ -1,0 +1,141 @@
+page {
+  min-height: 100%;
+  color: #303249;
+  background-color: #f2ecf9;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+.page-background {
+  position: fixed;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 100vh;
+  padding: 24rpx 20rpx 48rpx;
+}
+
+.card {
+  width: 710rpx;
+  margin-bottom: 30rpx;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1rpx solid rgba(255, 255, 255, 0.9);
+  border-radius: 30rpx;
+  box-shadow: 0 16rpx 44rpx rgba(103, 83, 168, 0.14);
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 26rpx;
+}
+
+.avatar {
+  width: 92rpx;
+  height: 92rpx;
+  flex: none;
+  border-radius: 50%;
+  border: 5rpx solid rgba(255, 255, 255, 0.9);
+  background: #e8e4f5;
+  box-shadow: 0 8rpx 20rpx rgba(91, 70, 155, 0.16);
+}
+
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 34rpx;
+  background: linear-gradient(135deg, #8c6ff7, #ff8fac);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  margin-left: 22rpx;
+}
+
+.nickName {
+  overflow: hidden;
+  color: #292a40;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.card-body,
+.card-body image {
+  display: block;
+  width: 100%;
+}
+
+.card-body {
+  overflow: hidden;
+  background: #eeebf6;
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 24rpx 24rpx;
+  color: #8d8fa3;
+  font-size: 25rpx;
+  text-align: right;
+}
+
+.card-tag {
+  padding: 7rpx 16rpx;
+  color: #7657d9;
+  font-size: 22rpx;
+  line-height: 1;
+  background: #f0eaff;
+  border-radius: 999rpx;
+}
+
+.empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 65vh;
+  padding: 80rpx 40rpx;
+  color: #8d8fa3;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.empty-icon {
+  margin-bottom: 22rpx;
+  font-size: 92rpx;
+  line-height: 1;
+}
+
+.retry-button {
+  margin-top: 28rpx;
+  color: #7657e6;
+  border-color: #c9baf8;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.86);
+}
+
+button::after {
+  border: none;
+}

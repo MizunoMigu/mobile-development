@@ -1,0 +1,42 @@
+<image class="page-background" src="/images/app-background.jpg" mode="aspectFill"></image>
+<view class="container add-page">
+  <view class="upload-hero">
+    <text class="upload-kicker">CREATE A MEMORY</text>
+    <text class="upload-title">上传新瞬间</text>
+    <text class="upload-tip">从相册挑选，或用相机记录眼前的美好</text>
+    <view class="tag-picker">
+      <text class="tag-picker-title">为这张照片选择标签</text>
+      <view class="tag-options">
+        <view wx:for="{{photoTags}}" wx:key="*this" class="tag-option {{selectedTag === item ? 'tag-option-active' : ''}}" data-tag="{{item}}" bindtap="selectTag">{{item}}</view>
+      </view>
+    </view>
+    <text wx:if="{{!loggedIn}}" class="login-notice">请先登录后再上传图片</text>
+    <button class="choose-button" bindtap="upload" loading="{{uploading}}" disabled="{{uploading}}"><text class="upload-icon">＋</text>{{uploading ? '正在上传' : (loggedIn ? '选择一张图片' : '请先登录')}}</button>
+  </view>
+
+  <view class="photoBox">
+    <view class="section-title">
+      <text>已上传图片历史记录</text>
+      <text class="photo-count">{{historyPhotos.length}} 张</text>
+    </view>
+
+    <view wx:if="{{historyPhotos.length}}" class="photo-grid">
+      <view wx:for="{{historyPhotos}}" wx:key="_id" class="history-item">
+        <image src="{{item.photoUrl}}" mode="aspectFill" lazy-load="{{true}}" data-url="{{item.photoUrl}}" bindtap="previewHistory"></image>
+        <text class="history-tag">{{item.tag || '未分类'}}</text>
+      </view>
+    </view>
+
+    <block wx:if="{{!loading}}">
+      <view wx:if="{{!historyPhotos.length}}" class="history-empty">
+        <text>{{errorText || emptyText}}</text>
+        <button wx:if="{{errorText}}" class="retry-button" size="mini" bindtap="retryLoad">重新加载</button>
+      </view>
+    </block>
+
+    <view wx:if="{{historyPhotos.length}}" class="feed-status">
+      <text wx:if="{{loadingMore}}">正在加载…</text>
+      <text wx:elif="{{!hasMore}}">没有更多了</text>
+    </view>
+  </view>
+</view>

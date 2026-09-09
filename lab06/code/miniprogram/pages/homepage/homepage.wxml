@@ -1,0 +1,76 @@
+<image class="page-background" src="/images/app-background.jpg" mode="aspectFill"></image>
+<view class="container profile-page">
+  <block wx:if="{{isSelf}}">
+    <view wx:if="{{!loggedIn}}" class="loginBox">
+      <view class="login-icon">♡</view>
+      <text class="login-title">登录微信账号</text>
+      <text class="login-tip">登录后可上传图片，头像昵称可在主页中自行设置</text>
+      <button class="login-button" bindtap="login" loading="{{identityLoading}}" disabled="{{identityLoading}}">进入个人主页</button>
+    </view>
+  </block>
+
+  <block wx:if="{{!isSelf || loggedIn}}">
+    <view wx:if="{{author}}" class="avatarBox">
+      <image wx:if="{{author.avatarUrl}}" src="{{author.avatarUrl}}" mode="aspectFill"></image>
+      <view wx:else class="profile-fallback">{{author.initial}}</view>
+      <text>{{author.nickName}}的个人主页</text>
+      <text class="count">共分享 {{photoList.length}} 张图片</text>
+      <button wx:if="{{isSelf && loggedIn}}" class="edit-profile-button" size="mini" bindtap="openProfileEditor">修改头像和昵称</button>
+      <button wx:if="{{isSelf && loggedIn}}" class="logout-button" size="mini" bindtap="logout">退出登录</button>
+    </view>
+
+    <view wx:if="{{editingProfile}}" class="profile-editor">
+      <text class="editor-title">编辑个人资料</text>
+      <text class="editor-tip">头像和昵称由你主动选择，也可以继续使用默认资料</text>
+      <form class="profile-form" bindsubmit="saveProfile">
+        <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="chooseProfileAvatar">
+          <image wx:if="{{draftAvatarUrl}}" src="{{draftAvatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="editor-avatar-fallback">{{draftInitial}}</view>
+          <text class="avatar-edit-mark">更换</text>
+        </button>
+        <view class="nickname-field">
+          <text>昵称</text>
+          <input name="nickName" type="nickname" value="{{draftNickName}}" maxlength="20" confirm-type="done" placeholder="请输入昵称" bindinput="onNicknameInput"></input>
+        </view>
+        <view class="editor-actions">
+          <button class="editor-cancel" form-type="reset" bindtap="cancelProfileEdit" disabled="{{profileSaving}}">取消</button>
+          <button class="editor-save" form-type="submit" loading="{{profileSaving}}" disabled="{{profileSaving}}">保存资料</button>
+        </view>
+      </form>
+    </view>
+
+    <block wx:for="{{photoList}}" wx:key="_id">
+      <view class="card">
+        <view class="card-head">
+          <image wx:if="{{item.avatarUrl}}" class="avatar" src="{{item.avatarUrl}}" mode="aspectFill"></image>
+          <view wx:else class="avatar avatar-fallback">{{item.initial}}</view>
+          <view class="title">
+            <text class="nickName">{{item.nickName}}</text>
+          </view>
+        </view>
+
+        <navigator class="card-body" url="../detail/detail?id={{item._id}}">
+          <image src="{{item.photoUrl}}" mode="widthFix" lazy-load="{{true}}"></image>
+        </navigator>
+
+        <view class="card-foot">
+          <text class="card-tag">{{item.tag}}</text>
+          <text>{{item.addDate}}</text>
+        </view>
+      </view>
+    </block>
+
+    <block wx:if="{{!loading}}">
+      <view wx:if="{{!photoList.length}}" class="empty">
+        <text class="empty-icon">▧</text>
+        <text>{{errorText || emptyText}}</text>
+        <button wx:if="{{errorText}}" class="retry-button" size="mini" bindtap="retryLoad">重新加载</button>
+      </view>
+    </block>
+
+    <view wx:if="{{photoList.length}}" class="feed-status">
+      <text wx:if="{{loadingMore}}">正在加载…</text>
+      <text wx:elif="{{!hasMore}}">没有更多了</text>
+    </view>
+  </block>
+</view>
